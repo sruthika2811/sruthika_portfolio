@@ -104,6 +104,11 @@ const Skills = () => {
   const [unlocked, setUnlocked] = useState(false);
   const [showChallengeModal, setShowChallengeModal] = useState(false);
 
+  useEffect(() => {
+    const isSavedUnlocked = localStorage.getItem('skills_unlocked') === 'true';
+    if (isSavedUnlocked) setUnlocked(true);
+  }, []);
+
   // States for active puzzle selection
   const [activeChallengePool, setActiveChallengePool] = useState([]);
   const [shuffledLogos, setShuffledLogos] = useState([]);
@@ -263,6 +268,7 @@ const Skills = () => {
       setTimeout(() => {
         setShowChallengeModal(false);
         setUnlocked(true);
+        localStorage.setItem('skills_unlocked', 'true');
         setShowUnlockScreen(false);
         
         // Success effect trigger (Global burst)
@@ -362,6 +368,7 @@ const Skills = () => {
 
   const performUnlock = () => {
     setUnlocked(true);
+    localStorage.setItem('skills_unlocked', 'true');
     setTimeout(() => {
       skillsContainerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 100);

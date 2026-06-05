@@ -5,6 +5,7 @@ import { Code2, Sun, Menu } from 'lucide-react';
 const Navbar = () => {
   const [hoveredItem, setHoveredItem] = useState(null);
   const [activeSection, setActiveSection] = useState('Home');
+  const [lockedMessageItem, setLockedMessageItem] = useState(null);
   
   const navItems = [
     'Home',
@@ -43,6 +44,15 @@ const Navbar = () => {
   }, []);
 
   const handleNavClick = (item) => {
+    if (item === 'Skills' || item === 'Projects') {
+      const isUnlocked = localStorage.getItem(`${item.toLowerCase()}_unlocked`) === 'true';
+      if (!isUnlocked) {
+        setLockedMessageItem(item);
+        setTimeout(() => setLockedMessageItem(null), 3000);
+        return;
+      }
+    }
+
     setActiveSection(item);
     const element = document.getElementById(item.toLowerCase());
     if (element) {
@@ -110,7 +120,9 @@ const Navbar = () => {
 
             {/* Tooltip */}
             <AnimatePresence>
-              {hoveredItem === item && item !== 'Home' && (
+              {(hoveredItem === item || lockedMessageItem === item) && 
+               (item === 'Skills' || item === 'Projects') && 
+               localStorage.getItem(`${item.toLowerCase()}_unlocked`) !== 'true' && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -126,11 +138,15 @@ const Navbar = () => {
                     borderRadius: '8px',
                     fontSize: '0.8rem',
                     whiteSpace: 'nowrap',
-                    color: '#fff',
-                    pointerEvents: 'none'
+                    color: lockedMessageItem === item ? '#ef4444' : '#fff',
+                    pointerEvents: 'none',
+                    zIndex: 200,
+                    border: lockedMessageItem === item ? '1px solid #ef4444' : '1px solid rgba(255, 255, 255, 0.1)'
                   }}
                 >
-                  👉 Solve puzzles to unlock this section
+                  {lockedMessageItem === item 
+                    ? `🔒 Solve the challenge to unlock the ${item} section.` 
+                    : '🔒 Solve puzzles to unlock this section'}
                 </motion.div>
               )}
             </AnimatePresence>
