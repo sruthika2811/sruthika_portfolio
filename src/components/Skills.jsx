@@ -103,10 +103,20 @@ const cardVariants = {
 const Skills = () => {
   const [unlocked, setUnlocked] = useState(false);
   const [showChallengeModal, setShowChallengeModal] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const isSavedUnlocked = localStorage.getItem('skills_unlocked') === 'true';
     if (isSavedUnlocked) setUnlocked(true);
+  }, []);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   // States for active puzzle selection
@@ -565,9 +575,10 @@ const Skills = () => {
                 transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                 className="glass"
                 style={{
-                  padding: '40px',
+                  padding: isMobile ? '30px 20px' : '40px',
                   borderRadius: '20px',
                   textAlign: 'center',
+                  width: isMobile ? '90%' : '100%',
                   maxWidth: '380px',
                   display: 'flex',
                   flexDirection: 'column',
@@ -665,12 +676,13 @@ const Skills = () => {
               style={{
                 width: '100%',
                 maxWidth: '680px',
-                padding: '35px 30px',
+                padding: isMobile ? '20px 15px' : '35px 30px',
                 borderRadius: '24px',
                 position: 'relative',
-                overflow: 'visible',
+                overflow: 'hidden',
                 boxShadow: '0 30px 60px rgba(0, 0, 0, 0.6)',
-                border: '1px solid rgba(255, 255, 255, 0.1)'
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                boxSizing: 'border-box'
               }}
             >
               {/* SVG connection lines */}
@@ -709,8 +721,8 @@ const Skills = () => {
                 onClick={() => setShowChallengeModal(false)}
                 style={{
                   position: 'absolute',
-                  top: '18px',
-                  right: '18px',
+                  top: isMobile ? '12px' : '18px',
+                  right: isMobile ? '12px' : '18px',
                   background: 'none',
                   border: 'none',
                   color: 'var(--text-secondary)',
@@ -726,15 +738,23 @@ const Skills = () => {
               </button>
 
               {/* HUD */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 3, borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '14px', marginBottom: '24px' }}>
+              <div style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center', 
+                zIndex: 3, 
+                borderBottom: '1px solid rgba(255, 255, 255, 0.08)', 
+                paddingBottom: isMobile ? '10px' : '14px', 
+                marginBottom: isMobile ? '16px' : '24px' 
+              }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <Lock size={16} style={{ color: 'var(--accent-pink)', filter: 'drop-shadow(0 0 3px rgba(236,72,153,0.4))' }} />
-                  <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: '600', letterSpacing: '0.05em' }}>
+                  <span style={{ fontSize: isMobile ? '0.7rem' : '0.8rem', color: 'var(--text-secondary)', fontWeight: '600', letterSpacing: '0.05em' }}>
                     MATCH 4 TECHNOLOGIES
                   </span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                  <span style={{ fontSize: '0.85rem', color: '#fff', fontWeight: '500' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '8px' : '14px' }}>
+                  <span style={{ fontSize: isMobile ? '0.75rem' : '0.85rem', color: '#fff', fontWeight: '500' }}>
                     Progress: <span style={{ color: '#10b981' }}>{matchedPairs.length}</span>/4
                   </span>
                   <button 
@@ -759,15 +779,28 @@ const Skills = () => {
               <div 
                 style={{ 
                   display: 'grid', 
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', 
-                  gap: '40px', 
+                  gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(220px, 1fr))', 
+                  gap: isMobile ? '20px' : '40px', 
                   zIndex: 2, 
                   position: 'relative'
                 }}
               >
                 {/* Column 1: Technology Logos (Large Floating Cards, Only Icon Visible) */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-                  <span style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-secondary)', letterSpacing: '0.05em', marginBottom: '2px' }}>
+                <div style={{ 
+                  display: isMobile ? 'grid' : 'flex', 
+                  gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'none', 
+                  flexDirection: isMobile ? 'row' : 'column', 
+                  gap: isMobile ? '12px' : '18px' 
+                }}>
+                  <span style={{ 
+                    fontSize: '0.75rem', 
+                    fontWeight: '700', 
+                    color: 'var(--text-secondary)', 
+                    letterSpacing: '0.05em', 
+                    marginBottom: '2px',
+                    gridColumn: isMobile ? 'span 2' : 'auto',
+                    textAlign: isMobile ? 'center' : 'left'
+                  }}>
                     DRAG OR CLICK LOGO
                   </span>
 
@@ -783,7 +816,7 @@ const Skills = () => {
                           <div
                             data-matched-logo={item.id}
                             style={{
-                              height: '105px',
+                              height: isMobile ? '75px' : '105px',
                               borderRadius: '16px',
                               border: `1px solid ${item.color}35`,
                               background: 'rgba(255,255,255,0.01)',
@@ -795,7 +828,7 @@ const Skills = () => {
                             }}
                           >
                             <div style={{ color: item.color }}>
-                              <Icon size={38} />
+                              <Icon size={isMobile ? 28 : 38} />
                             </div>
                           </div>
                         ) : (
@@ -822,7 +855,7 @@ const Skills = () => {
                                   }
                             }
                             style={{
-                              height: '105px',
+                              height: isMobile ? '75px' : '105px',
                               borderRadius: '16px',
                               border: isSelected 
                                 ? `1px solid ${item.color}` 
@@ -854,7 +887,7 @@ const Skills = () => {
                               alignItems: 'center',
                               filter: `drop-shadow(0 0 4px ${item.color}50)`
                             }}>
-                              <Icon size={44} />
+                              <Icon size={isMobile ? 32 : 44} />
                             </div>
                           </motion.div>
                         )}
@@ -864,8 +897,21 @@ const Skills = () => {
                 </div>
 
                 {/* Column 2: Technology Names */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-                  <span style={{ fontSize: '0.75rem', fontWeight: '700', color: 'var(--text-secondary)', letterSpacing: '0.05em', marginBottom: '2px' }}>
+                <div style={{ 
+                  display: isMobile ? 'grid' : 'flex', 
+                  gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'none', 
+                  flexDirection: isMobile ? 'row' : 'column', 
+                  gap: isMobile ? '12px' : '18px' 
+                }}>
+                  <span style={{ 
+                    fontSize: '0.75rem', 
+                    fontWeight: '700', 
+                    color: 'var(--text-secondary)', 
+                    letterSpacing: '0.05em', 
+                    marginBottom: '2px',
+                    gridColumn: isMobile ? 'span 2' : 'auto',
+                    textAlign: isMobile ? 'center' : 'left'
+                  }}>
                     DROP LOGO OR CLICK NAME
                   </span>
 
@@ -888,7 +934,7 @@ const Skills = () => {
                               : {}
                         }
                         style={{
-                          height: '105px',
+                          height: isMobile ? '85px' : '105px',
                           borderRadius: '16px',
                           border: isMatched 
                             ? '1px solid rgba(16, 185, 129, 0.5)' 
@@ -901,9 +947,11 @@ const Skills = () => {
                               ? `${item.color}08`
                               : 'rgba(255, 255, 255, 0.01)',
                           display: 'flex',
+                          flexDirection: isMobile ? 'column' : 'row',
                           alignItems: 'center',
-                          justifyContent: 'space-between',
-                          padding: '0 24px',
+                          justifyContent: isMobile ? 'center' : 'space-between',
+                          padding: isMobile ? '8px 12px' : '0 24px',
+                          gap: isMobile ? '6px' : '0',
                           cursor: isMatched ? 'default' : 'pointer',
                           transition: 'border-color 0.3s, background-color 0.3s'
                         }}
@@ -912,16 +960,17 @@ const Skills = () => {
                         <span style={{ 
                           color: isMatched ? '#fff' : 'var(--text-secondary)', 
                           fontWeight: isMatched ? '600' : '500',
-                          fontSize: '0.92rem',
-                          letterSpacing: '0.02em'
+                          fontSize: isMobile ? '0.8rem' : '0.92rem',
+                          letterSpacing: '0.02em',
+                          textAlign: 'center'
                         }}>
                           {item.name}
                         </span>
 
                         {/* Large Slot Ring */}
                         <div style={{
-                          width: '46px',
-                          height: '46px',
+                          width: isMobile ? '32px' : '46px',
+                          height: isMobile ? '32px' : '46px',
                           borderRadius: '50%',
                           border: isMatched ? 'none' : '1px dashed rgba(255,255,255,0.25)',
                           display: 'flex',
@@ -932,7 +981,7 @@ const Skills = () => {
                           boxShadow: isMatched ? `0 0 10px ${item.color}30` : 'none',
                           transition: 'all 0.3s ease'
                         }}>
-                          {isMatched ? <Icon size={24} style={{ color: item.color }} /> : null}
+                          {isMatched ? <Icon size={isMobile ? 16 : 24} style={{ color: item.color }} /> : null}
                         </div>
                       </motion.div>
                     );
