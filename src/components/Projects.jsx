@@ -4,8 +4,7 @@ import { ExternalLink, X } from 'lucide-react';
 import { FiGithub } from 'react-icons/fi';
 
 // Explicitly import each project walkthrough video
-import mediguideDemo from '../assets/videos/mediguide-demo.mp4';
-import placementDemo from '../assets/videos/placement-demo.mp4';
+
 
 const projects = [
   {
@@ -13,27 +12,25 @@ const projects = [
     desc: 'MediGuide is a web-based healthcare application that helps users understand medical prescriptions by extracting medicine information from prescription images using OCR technology. The system analyzes prescriptions and provides medicine details, dosage information, diet recommendations, safety suggestions, and multilingual support.',
     tags: ['Python', 'OCR', 'Machine Learning', 'Flask', 'HTML', 'CSS', 'JavaScript'],
     github: 'https://github.com/sruthika2811/medi-guide',
-    video: mediguideDemo
+
   },
   {
     title: 'Student Placement Prediction',
     desc: 'An intelligent machine learning application that predicts student placement opportunities based on academic and skill-related factors. Built with a user-friendly Streamlit interface and interactive visualizations to help analyze placement outcomes and trends.',
     tags: ['Python', 'Streamlit', 'Scikit-learn', 'Pandas', 'Plotly', 'Joblib', 'Jupyter Notebook'],
     github: 'https://github.com/sruthika2811/Student-Placement-Prediction',
-    video: placementDemo
+
   },
   {
     title: 'Puzzle-Based Portfolio Website',
     desc: 'An interactive developer portfolio where visitors unlock sections by solving engaging technology-based puzzles such as debugging challenges, code output prediction, logo matching, memory puzzles, and drag-and-drop challenges, creating a unique recruiter experience.',
     tags: ['HTML5', 'CSS3', 'React.js', 'JavaScript', 'Framer Motion', 'Vite'],
     github: 'https://github.com/sruthika2811',
-    video: null
+
   }
 ];
 
 const Projects = () => {
-  const [hoveredVideo, setHoveredVideo] = useState(null);
-  const [selectedVideo, setSelectedVideo] = useState(null);
 
   // Close lightbox on Escape keypress
   useEffect(() => {
@@ -203,7 +200,7 @@ const Projects = () => {
       {/* Premium Video Lightbox Overlay */}
       <AnimatePresence>
         {selectedVideo && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -239,7 +236,7 @@ const Projects = () => {
               }}
             >
               {/* HTML5 video player with customized controls */}
-              <video 
+              <video
                 src={selectedVideo}
                 controls
                 autoPlay
@@ -254,7 +251,7 @@ const Projects = () => {
               />
 
               {/* Close Button floating at top-right */}
-              <button 
+              <button
                 onClick={() => setSelectedVideo(null)}
                 style={{
                   position: 'fixed',
@@ -286,3 +283,4 @@ const Projects = () => {
 };
 
 export default Projects;
+
