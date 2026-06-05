@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="cyan-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f2fe" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <linearGradient id="purple-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6" />
+      <stop offset="100%" stop-color="#ec4899" />
+    </linearGradient>
+    <linearGradient id="union-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f2fe" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+    
+    <!-- Glow effect -->
+    <filter id="neon-glow" x="-15%" y="-15%" width="130%" height="130%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Rounded square background matching dark theme -->
+  <rect x="16" y="16" width="480" height="480" rx="120" fill="#0b0e14" stroke="rgba(255, 255, 255, 0.05)" stroke-width="6" />
+  
+  <!-- Sleek developer <S> concept -->
+  <!-- Left Bracket < -->
+  <path d="M 140 160 L 70 256 L 140 352" stroke="url(#cyan-grad)" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" filter="url(#neon-glow)" />
+  
+  <!-- Central S -->
+  <path d="M 290 190 L 220 190 A 30 30 0 0 0 220 250 L 292 250 A 30 30 0 0 1 292 310 L 222 310" stroke="url(#union-grad)" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" filter="url(#neon-glow)" />
+  
+  <!-- Right Bracket > -->
+  <path d="M 372 160 L 442 256 L 372 352" stroke="url(#purple-grad)" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" filter="url(#neon-glow)" />
+</svg>
